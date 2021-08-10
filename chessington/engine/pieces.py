@@ -28,6 +28,14 @@ class Piece(ABC):
         current_square = board.find_piece(self)
         board.move_piece(current_square, new_square)
 
+    def is_on_board(self, new_square):
+        """
+        Check if possible move is on the board
+        """
+        if new_square.row in range (8) and new_square.col in range (8):
+            return True
+        else:
+            return False
 
 class Pawn(Piece):
     """
@@ -45,13 +53,14 @@ class Pawn(Piece):
             home_row = 1
             
         new_square = Square.at((current_square.row) + direction, current_square.col)
-        if board.get_piece(new_square) == None:
-            new_squares.append(new_square)
-            if current_square.row == home_row:
-                new_square = Square.at((current_square.row) + direction*2, current_square.col)
-                if board.get_piece(new_square) == None:
-                    new_squares.append(new_square)
-        
+        if self.is_on_board(new_square):
+            if board.get_piece(new_square) == None:
+                new_squares.append(new_square)
+                if current_square.row == home_row:
+                    new_square = Square.at((current_square.row) + direction*2, current_square.col)
+                    if board.get_piece(new_square) == None:
+                        new_squares.append(new_square)
+            
         return new_squares
 
 class Knight(Piece):
