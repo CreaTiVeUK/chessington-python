@@ -38,15 +38,21 @@ class Pawn(Piece):
         current_square = board.find_piece(self)
         new_squares = []
         if self.player == Player.BLACK:
-            if current_square.row == 6:
-                new_squares.append(Square.at((current_square.row) - 2, current_square.col))
-            new_squares.append(Square.at((current_square.row) - 1, current_square.col))
+            direction = -1
+            home_row = 6
         else:
-            if current_square.row == 1:
-                new_squares.append(Square.at((current_square.row) + 2, current_square.col))
-            new_squares.append(Square.at((current_square.row) + 1, current_square.col))
+            direction = 1
+            home_row = 1
+            
+        new_square = Square.at((current_square.row) + direction, current_square.col)
+        if board.get_piece(new_square) == None:
+            new_squares.append(new_square)
+            if current_square.row == home_row:
+                new_square = Square.at((current_square.row) + direction*2, current_square.col)
+                if board.get_piece(new_square) == None:
+                    new_squares.append(new_square)
+        
         return new_squares
-
 
 class Knight(Piece):
     """
