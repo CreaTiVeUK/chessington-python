@@ -61,7 +61,15 @@ class Pawn(Piece):
                     if board.get_piece(new_square) == None:
                         new_squares.append(new_square)
             
+        
+        # Check if diagonals are occupied, if so, can add to moves
+        for i in [1, -1]:
+            capture_square = Square.at((current_square.row + direction), (current_square.col + i))
+            if self.is_on_board(capture_square) and board.get_piece(capture_square) != None and board.get_piece(capture_square).player != self.player:
+                new_squares.append(capture_square)
+
         return new_squares
+
 
 class Knight(Piece):
     """
