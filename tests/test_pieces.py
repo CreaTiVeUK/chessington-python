@@ -1,6 +1,6 @@
 from chessington.engine.board import Board
 from chessington.engine.data import Player, Square
-from chessington.engine.pieces import Pawn
+from chessington.engine.pieces import King, Pawn
 
 class TestPawns:
 
@@ -331,3 +331,70 @@ class TestPawns:
         # Assert
         assert Square.at(2, 3) not in moves
         assert Square.at(2, 5) not in moves
+
+class TestKing:
+
+    @staticmethod
+    def test_white_king_can_move_one_square():
+        
+        # Arrange
+        board = Board.empty()
+        king = King(Player.WHITE)
+        square = Square.at(1, 1)
+        board.set_piece(square, king)
+
+        # Act
+        moves = king.get_available_moves(board)
+
+        # Assert
+        assert Square.at(0, 0) in moves
+        assert Square.at(0, 1) in moves
+        assert Square.at(0, 2) in moves
+        assert Square.at(1, 0) in moves
+        assert Square.at(1, 2) in moves
+        assert Square.at(2, 0) in moves
+        assert Square.at(2, 1) in moves
+        assert Square.at(2, 2) in moves
+
+    @staticmethod
+    def test_black_king_can_move_one_square():
+        
+        # Arrange
+        board = Board.empty()
+        king = King(Player.BLACK)
+        square = Square.at(1, 1)
+        board.set_piece(square, king)
+
+        # Act
+        moves = king.get_available_moves(board)
+
+        # Assert
+        assert Square.at(0, 0) in moves
+        assert Square.at(0, 1) in moves
+        assert Square.at(0, 2) in moves
+        assert Square.at(1, 0) in moves
+        assert Square.at(1, 2) in moves
+        assert Square.at(2, 0) in moves
+        assert Square.at(2, 1) in moves
+        assert Square.at(2, 2) in moves
+
+
+    @staticmethod
+    def test_white_king_cant_move_if_own_piece_in_place():
+
+        # Arrange
+        board = Board.empty()
+        king = King(Player.WHITE)
+        king_square = Square.at(4, 4)
+        board.set_piece(king_square, king)
+
+        obstructing_square = Square.at(5, 4)
+        obstruction = Pawn(Player.WHITE)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = king.get_available_moves(board)
+
+        # Assert
+        assert len(moves) == 7
+    

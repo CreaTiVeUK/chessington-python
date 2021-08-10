@@ -113,4 +113,16 @@ class King(Piece):
     """
 
     def get_available_moves(self, board):
-        return []
+        current_square = board.find_piece(self)
+        new_squares = []
+        for row in [-1, 0, 1]:
+            for column in [-1, 0, 1]:
+                new_square = Square.at((current_square.row + row), (current_square.col + column))
+                if self.is_on_board(new_square): 
+                    if board.get_piece(new_square) == None:
+                        new_squares.append(new_square)
+                    if board.get_piece(new_square) != None and board.get_piece(new_square).player != self.player:
+                        new_squares.append(new_square)
+                    
+
+        return new_squares
